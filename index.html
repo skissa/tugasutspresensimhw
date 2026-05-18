@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistem Manajemen Mahasiswa</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Fira+Code:wght@500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       LOGIN SECTION
+  ═══════════════════════════════════════════ -->
+  <div id="loginSection" class="login-wrapper">
+    <div class="card login-card">
+      <h2>🔑 Sistem Akademik</h2>
+      <p>Silakan login untuk kelola data mahasiswa</p>
+      
+      <form id="formLogin" onsubmit="event.preventDefault(); prosesLogin();">
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="username" placeholder="Masukkan username" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="passwordLogin" placeholder="Masukkan password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">Login Masuk</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       DASHBOARD SECTION
+  ═══════════════════════════════════════════ -->
+  <div id="dashboardSection" style="display: none;">
+    
+    <header>
+      <div class="brand">
+        <h1>Sistem Akademik</h1>
+        <p>Manajemen Data Mahasiswa</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline" id="themeToggle" onclick="toggleTheme()">🌙 Dark Mode</button>
+        <button class="btn btn-primary" onclick="exportData()">⬇ Export CSV</button>
+        <button class="btn btn-danger" onclick="prosesLogout()">Keluar</button>
+      </div>
+    </header>
+
+    <main class="container">
+      
+      <!-- Form Mahasiswa -->
+      <section class="card">
+        <div class="card-title">
+          <span>Form Mahasiswa</span>
+        </div>
+
+        <div class="mode-badge" id="editBadge">
+          ⚠️ Mode Edit Aktif - <a href="#" onclick="batalEdit()" style="color:inherit">Batal</a>
+        </div>
+
+        <form id="formMahasiswa" onsubmit="event.preventDefault(); simpanData();">
+          <div class="form-group">
+            <label>Nomor Induk Mahasiswa (NIM)</label>
+            <input type="text" id="nim" placeholder="Masukkan NIM" required>
+          </div>
+
+          <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="nama" placeholder="Masukkan Nama Lengkap" required>
+          </div>
+
+          <div class="form-group">
+            <label>Alamat Domisili</label>
+            <textarea id="alamat" placeholder="Masukkan Alamat Lengkap" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Jenis Kelamin</label>
+            <div class="radio-container">
+              <div class="radio-box">
+                <input type="radio" id="jk-l" name="jk" value="Laki-laki" required>
+                <label for="jk-l">Laki-laki</label>
+              </div>
+              <div class="radio-box">
+                <input type="radio" id="jk-p" name="jk" value="Perempuan">
+                <label for="jk-p">Perempuan</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="btnSimpan">Simpan Data</button>
+            <button type="button" class="btn btn-outline" onclick="resetForm()">Reset</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Tabel Data Mahasiswa -->
+      <section class="card">
+        <div class="card-title">
+          <span>Data Mahasiswa</span>
+          <span style="font-size:0.85rem; color:var(--text-muted)">Total: <span id="totalData">0</span></span>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Cari data..." oninput="onSearch()">
+            <select id="filterSearch" onchange="onSearch()">
+              <option value="all">Semua Kolom</option>
+              <option value="nim">Cari NIM</option>
+              <option value="nama">Cari Nama</option>
+            </select>
+          </div>
+          <select id="limitData" onchange="changeLimit()" style="width: auto;">
+            <option value="5">5 / Hal</option>
+            <option value="10" selected>10 / Hal</option>
+          </select>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>NIM</th>
+                <th>Nama Lengkap</th>
+                <th>Jenis Kelamin</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="dataTable"></tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <div class="page-info" id="pageInfo">Menampilkan 0 data</div>
+          <div class="page-controls" id="pageControls"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
